@@ -1,15 +1,17 @@
-CXX = g++
-CXXFLAGS = -g -I C:/Personal/add/GLFW/include -I C:/Personal/add/GLAD/include -I C:/Personal/add/glm -I C:/Personal/add/stb
-LDFLAGS = -L C:/Personal/add/GLFW/lib-mingw-w64
-LIBS = -lglfw3 -luser32 -lkernel32 -lopengl32 -lgdi32
-
-TARGET = Output/OpenGL.exe
-SOURCES = main.cpp glad.c engine.hpp
+CXX = clang++
+CXXFLAGS = -std=c++17 -g -I./stb $(shell pkg-config --cflags glfw3) -I /mnt/Code/libs
+LDFLAGS = $(shell pkg-config --libs glfw3)
+TARGET = output/abu
+SOURCES = main.cpp glad.c
 
 all: $(TARGET)
 
 $(TARGET): $(SOURCES)
-	$(CXX) $(SOURCES) $(CXXFLAGS) $(LDFLAGS) $(LIBS) -o $(TARGET)
+	mkdir -p $(dir $(TARGET))
+	$(CXX) $(CXXFLAGS) $(SOURCES) $(LDFLAGS) -o $(TARGET)
 
 clean:
-	del /Q Output\OpenGL.exe
+	rm -f $(TARGET)
+
+run:
+	./output/abu
