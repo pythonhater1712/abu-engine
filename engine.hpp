@@ -1,6 +1,12 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+//////////  ////    //  //////////  //  ////    //  //////////          //      //  /////////   /////////
+//          // //   //  //          //  // //   //  //                  //      //  //      //  //      //
+//////////  //  //  //  //    ////  //  //  //  //  //////////          //////////  /////////   /////////
+//          //   // //  //      //  //  //   // //  //          ////    //      //  //          //
+//////////  //    ////  //////////  //  //    ////  //////////  ////    //      //  //          //
+
 #include <iostream>
 #include <cstring>
 
@@ -16,10 +22,6 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb/stb_truetype.h>
-
-/*-------------------------*/
-/* --- WINDOWING/INPUT --- */
-/*-------------------------*/
 
 class Window {
     public:
@@ -73,10 +75,6 @@ class Window {
         uint32_t width;
         uint32_t height;
 };
-
-/*-------------------*/
-/* --- RENDERING --- */
-/*-------------------*/
 
 class Vertices {
     public:
@@ -184,16 +182,22 @@ class Shaders {
         void checkShaderCompilation(GLuint shader) {
             int success;
             char info[512];
+            static bool hasRan = false;
+
+            if (!hasRan) {
+                hasRan = true;
+                std::cout << 
+                "(3 = TexturedVertex, 4 = TexturedFragment, 5 = FlatVertex, 6 = FlatFragment)" << std::endl;
+            }
 
             glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
             if (!success) {
                 glGetShaderInfoLog(shader, 512, nullptr, info);
                 std::cout << info << std::endl;
+                std::cout << "Shader ID: " << shader << std::endl;
                 throw std::runtime_error("Shader couldn't compile.");
             } else {
-                std::cout << "Shader is fine" << shader << std::endl;
-                std::cout << 
-                "(1 = TexturedVertex, 2 = TexturedFragment, 3 = FlatVertex, 4 = FlatFragment)" << std::endl;
+                std::cout << "Shader " << shader << " compiled successfully." << std::endl;
             }
         }
 };
@@ -280,6 +284,10 @@ class Render {
             return VAO;
         }
 
+        glm::mat4 GetMatrix() {
+            return transform;
+        }
+
         void ResetTransform() {
             transform = glm::mat4(1.0f);
         }
@@ -314,5 +322,11 @@ class Render {
 
         glm::mat4 transform = glm::mat4(1.0f);
 };
+
+//////////  ////    //  //////////  //  ////    //  //////////
+//          // //   //  //          //  // //   //  //
+//////////  //  //  //  //    ////  //  //  //  //  //////////
+//          //   // //  //      //  //  //   // //  //
+//////////  //    ////  //////////  //  //    ////  //////////  
 
 #endif
