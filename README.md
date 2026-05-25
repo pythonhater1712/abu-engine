@@ -1,0 +1,5 @@
+Made in: OpenGL 3.x, GLFW
+Runs on: Linux (Windows untested)
+Main language: C++
+Status: Very Early Development
+Runs with no errors: Yes
